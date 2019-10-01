@@ -33,18 +33,31 @@ function createpuzzle() {
 
     var buttonsContainer = document.createElement("div");
     buttonsContainer.id = 'buttonsContainerid';
-    puzzlecontainer.className = 'container h-100 w-100';
+    puzzlecontainer.className = 'container h-100 w-50';
 
     var buttonsRow = document.createElement("div");
     buttonsRow.id = 'buttonsRowId';
-    puzzlerow.className = 'row h-100 justify-content-center';
+    puzzlerow.className = 'row h-100 d-flex';
 
-    var buttonsCol = document.createElement('button');
-    buttonsCol.id = 'buttonsColId';
-    buttonsCol.className = 'col-4';
+    var randomizeCol = document.createElement('button');
+    randomizeCol.addEventListener('click', randomizer);
+    randomizeCol.id = 'randomizeColId';
+    randomizeCol.className = 'col-4 offset-4 mt-2';
+    randomizeCol.innerHTML = 'RANDOMIZE';
+
+    var uploadCol = document.createElement('button');
+    uploadCol.addEventListener('click', photoUpload);
+    uploadCol.id = 'uploadColId';
+    uploadCol.className = 'col-1 offset-9 align-items-start';
+    uploadCol.innerHTML = '^';
+
+
+
+
 
     puzzlecontainer.appendChild(puzzlerow);
-    buttonsRow.appendChild(buttonsCol);
+    buttonsRow.appendChild(randomizeCol);
+    buttonsRow.appendChild(uploadCol);
     buttonsContainer.appendChild(buttonsRow);
 
 
@@ -64,7 +77,12 @@ function moveTile() {
 
 }
 //randomize puzzles id
-function randomize() {
+function randomizer() {
+
+
+}
+
+function photoUpload() {
 
 
 }
