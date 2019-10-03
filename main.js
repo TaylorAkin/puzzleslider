@@ -12,9 +12,12 @@ var tileObjectArray = []
 
 
 class tileObject {
-    constructor(location, id){
+    constructor(location, id) {
         this.id = id;
         this.location = location;
+        // ht = document.createElement('div');
+        // ht.innerHTML = id;
+        // this.content = ht;
 
     }
 }
@@ -39,14 +42,14 @@ function createpuzzle() {
     while (i < 16) {
 
         var puzzletiles = document.createElement('div');
-        puzzletiles.addEventListener('click', moveTile);
+        puzzletiles.addEventListener('click', checkTile);
         puzzletiles.id = i;
         tileArray.push(i);
-        puzzletiles.className = 'col-3 border';
+        puzzletiles.className = 'col-3 border display-1';
         puzzlerow.appendChild(puzzletiles);
         puzzletiles.innerHTML = i;
 
-        var tile = new tileObject(i,tileArray[i])
+        var tile = new tileObject(i, tileArray[i])
         tileObjectArray.push(tile);
 
         i++
@@ -94,37 +97,88 @@ function createpuzzle() {
 }
 
 
-function blankTile(locat){
-    for(var i = 0; i < tileObjectArray.length; i++){
+function checkTile(e) {
+    var divid = e.target.id;
+    var getNotClickId = tileObjectArray[this.id].location;
+    console.log(tileObjectArray[getNotClickId].location)
+    console.log(tileObjectArray[0].location)
 
-        if(tileObjectArray[i].location == locat){
-                return i;
-            
-        }
+
+    if (tileObjectArray[getNotClickId].location == tileObjectArray[0].location + 1 &&
+
+            tileObjectArray[getNotClickId].location% 4 !=0
+      
+    ) {
+        console.log('ta');
+        moveTile(divid);
 
     }
+    else if (tileObjectArray[getNotClickId].location == tileObjectArray[0].location - 1  &&
+
+        tileObjectArray[getNotClickId].location% 4 !=0) {
+        console.log('ta');
+        moveTile(divid);
+    }
+
+    else if (tileObjectArray[getNotClickId].location == tileObjectArray[0].location + 4 &&
+
+        tileObjectArray[getNotClickId].location% 4 !=0) {
+        console.log('ta');
+        moveTile(divid);
+    }
+
+    else if (tileObjectArray[getNotClickId].location == tileObjectArray[0].location - 4 &&
+
+            tileObjectArray[getNotClickId].location% 4 !=0) {
+        console.log('ta');
+        moveTile(divid);
+
+    }
+
+
+
+
 }
 
 
-function moveTile(e) {
+function getBlankTileLoc(locat) {
+    for (var i = 0; i < tileObjectArray.length; i++) {
 
-    let clickedId = blankTile(this.id);
+        if (tileObjectArray[i].location == locat) {
+            return i;
+            console.log(i);
+
+        }
+    }
+}
+
+function moveTile(divid) {
+
+
+    var clickedId = getBlankTileLoc(divid);
+    console.log(clickedId);
     //location 0
-    var new_location = tileObjectArray[0].location;
+    var new_location_ofClicked = tileObjectArray[0].location;
 
     //changing id's location placement. moving the 0 location to where you clicked
     tileObjectArray[0].location = tileObjectArray[clickedId].location;
-    console.log(`new blank tile location: ${tileObjectArray[0].location}`)
 
-    tileObjectArray[clickedId].location = new_location;
-    console.log(`new clicked tile location: ${tileObjectArray[clickedId].location}`)
+    // console.log(`new blank tile location: ${tileObjectArray[0].location}`)
+
+    tileObjectArray[clickedId].location = new_location_ofClicked;
+    // console.log(`new clicked tile location: ${tileObjectArray[clickedId].location}`)
 
 
     for (let i = 0; i < 16; i++) {
         document.getElementById(`${tileObjectArray[i].location}`).innerHTML = i;
     }
 
-    console.log(tileObjectArray);
+    // console.log(tileObjectArray[0]);
+    // console.log(clickedId);
+    // console.log(new_location_ofClicked);
+
+
+
 
 
 
@@ -172,7 +226,7 @@ function randomizer() {
         randomizer();
 
     }
-console.log(tileObjectArray);
+    console.log(tileObjectArray);
 
 }
 
