@@ -45,10 +45,12 @@ function createpuzzle() {
         puzzletiles.addEventListener('click', checkTile);
         puzzletiles.id = i;
         tileArray.push(i);
-        puzzletiles.className = 'col-3 border display-1';
+        puzzletiles.className = 'border display-1';
+        puzzletiles.setAttribute('style', 'height: 150px; width:150px; overflow: hidden');
+        puzzletiles.innerHTML = '<img src="images/Oregon.jpg" width=600px; height:600px>';
         puzzlerow.appendChild(puzzletiles);
-        puzzletiles.innerHTML = '<img src="images/Oregon.jpg" width=150px height:150px>';
-        
+    
+
 
 
         //variable to hold object instance then passed to array.
@@ -172,59 +174,30 @@ function moveTile(getPuzzleSliderId) {
         document.getElementById(`${tileObjectArray[i].location}`).innerHTML = i;
     }
 
+//mywincondition
     var notWin = false;
-
     for (let j = 0; j < 16; j++) {
-
-
         if (tileObjectArray[j].location != tileObjectArray[j].id) {
 
             notWin = true
             console.log('true')
-
         }
-
-
     }
 
     if (notWin == false) {
         alert('WIN')
     }
-
 }
 
 
 
-
-//randomize puzzles location
-function getRandomInt(min, max, arr) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
 
 
 function randomizer() {
 
-    newArr = [];
 
-    for (var i = 0; i < tileArray.length; i++) {
-        var r = getRandomInt(0, 16, tileArray);
 
-        if (newArr.includes(r) == false) {
 
-            newArr.push(r);
-            document.getElementById(i).innerHTML = r;
-            // console.log('lalala');
-            tileObjectArray[i].id = r;
-
-        }
-        else {
-            i--;
-        }
-    }
-
-    tileArray = newArr;
 
     // keeping ranomizer to != win case
     if (tileArray[0] == 0) {
@@ -237,7 +210,24 @@ function randomizer() {
 
 }
 
+
+//every tile has the same image, just a certain same sized section of the image.
+function imageSlicer() {
+    var sliceImage = '';
+    for (var i = 0; i < tileObjectArray.length; i++) {
+      sliceImage =  tileObjectArray[i].innerhtml =  '<img src="images/Oregon.jpg" width=150px height:150px>'
+    }
+
+
+
+
+
+}
+
 function photoUpload() {
+    
+
+
 
 
 }
