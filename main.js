@@ -1,6 +1,4 @@
-// newindex = [1, 2, 14, 5, 6, 3, 11, 0, 7, 9, 12, 4, 8, 10, 13, 15];
 
-var newindex;
 
 var newArr = [];
 
@@ -8,13 +6,18 @@ var tileArray = []
 
 var tileObjectArray = []
 
-// console.log(tileArray);
 
 
+
+//class that holds object constructor function to build my tild objects
 class tileObject {
-    constructor(location, id){
+    constructor(id, location) {
         this.id = id;
         this.location = location;
+        // ht = document.createElement('div');
+        // ht.innerHTML = id;
+        // this.content = ht;
+        // console.log(location);
 
     }
 }
@@ -39,14 +42,17 @@ function createpuzzle() {
     while (i < 16) {
 
         var puzzletiles = document.createElement('div');
-        puzzletiles.addEventListener('click', moveTile);
+        puzzletiles.addEventListener('click', checkTile);
         puzzletiles.id = i;
         tileArray.push(i);
-        puzzletiles.className = 'col-3 border';
+        puzzletiles.className = 'col-3 border display-1';
         puzzlerow.appendChild(puzzletiles);
-        puzzletiles.innerHTML = i;
+        puzzletiles.innerHTML = '<img src="images/Oregon.jpg" width=150px height:150px>';
+        
 
-        var tile = new tileObject(i,tileArray[i])
+
+        //variable to hold object instance then passed to array.
+        var tile = new tileObject(i, tileArray[i])
         tileObjectArray.push(tile);
 
         i++
@@ -94,46 +100,103 @@ function createpuzzle() {
 }
 
 
-function blankTile(locat){
-    for(var i = 0; i < tileObjectArray.length; i++){
+function checkTile(e) {
+    var getPuzzleSliderId = e.target.id;
+    var ClickID = getTileId(this.id)
+    // var getNotClickId = tileObjectArray[this.id].location;
+    // console.log(getTileId(this.id))
+    // console.log(getNotClickId);
 
-        if(tileObjectArray[i].location == locat){
-                return i;
-            
-        }
+
+    if (tileObjectArray[ClickID].location == tileObjectArray[0].location + 1 &&
+
+        tileObjectArray[ClickID].location % 4 != 0
+
+    ) {
+        // console.log('first');
+        moveTile(getPuzzleSliderId);
 
     }
+    else if (tileObjectArray[ClickID].location == tileObjectArray[0].location - 1 &&
+
+        tileObjectArray[0].location % 4 != 0) {
+        // console.log('second');
+        moveTile(getPuzzleSliderId);
+    }
+
+    else if (tileObjectArray[ClickID].location == tileObjectArray[0].location + 4) {
+        // console.log('third');
+        moveTile(getPuzzleSliderId);
+    }
+
+    else if (tileObjectArray[ClickID].location == tileObjectArray[0].location - 4) {
+        // console.log('fourth');
+        moveTile(getPuzzleSliderId);
+
+    }
+
+
+
 }
 
 
-function moveTile(e) {
+function getTileId(locat) {
+    for (var i = 0; i < tileObjectArray.length; i++) {
 
-    let clickedId = blankTile(this.id);
+        if (tileObjectArray[i].location == locat) {
+            return i;
+            // console.log(i);
+
+        }
+    }
+}
+
+function moveTile(getPuzzleSliderId) {
+
+
+    var clickedId = getTileId(getPuzzleSliderId);
+    // console.log(clickedId);
     //location 0
-    var new_location = tileObjectArray[0].location;
+    var new_location_ofClicked = tileObjectArray[0].location;
 
     //changing id's location placement. moving the 0 location to where you clicked
     tileObjectArray[0].location = tileObjectArray[clickedId].location;
-    console.log(`new blank tile location: ${tileObjectArray[0].location}`)
 
-    tileObjectArray[clickedId].location = new_location;
-    console.log(`new clicked tile location: ${tileObjectArray[clickedId].location}`)
+    // console.log(`new blank tile location: ${tileObjectArray[0].location}`)
+
+    tileObjectArray[clickedId].location = new_location_ofClicked;
+    // console.log(`new clicked tile location: ${tileObjectArray[clickedId].location}`)
 
 
     for (let i = 0; i < 16; i++) {
         document.getElementById(`${tileObjectArray[i].location}`).innerHTML = i;
     }
 
-    console.log(tileObjectArray);
+    var notWin = false;
+
+    for (let j = 0; j < 16; j++) {
 
 
+        if (tileObjectArray[j].location != tileObjectArray[j].id) {
+
+            notWin = true
+            console.log('true')
+
+        }
+
+
+    }
+
+    if (notWin == false) {
+        alert('WIN')
+    }
 
 }
 
 
 
 
-//randomize puzzles id
+//randomize puzzles location
 function getRandomInt(min, max, arr) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -141,11 +204,9 @@ function getRandomInt(min, max, arr) {
 }
 
 
-
-
 function randomizer() {
 
-    var newArr = [];
+    newArr = [];
 
     for (var i = 0; i < tileArray.length; i++) {
         var r = getRandomInt(0, 16, tileArray);
@@ -172,7 +233,7 @@ function randomizer() {
         randomizer();
 
     }
-console.log(tileObjectArray);
+    // console.log(tileObjectArray);
 
 }
 
