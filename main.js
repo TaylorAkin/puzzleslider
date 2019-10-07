@@ -116,12 +116,12 @@ function createpuzzle() {
     randomizeCol.className = 'col-4 offset-4 mt-2';
     randomizeCol.innerHTML = 'RANDOMIZE';
 
-    var uploadCol = document.createElement('button');
-    uploadCol.addEventListener('click', photoUpload);
+    var uploadCol = document.createElement('input');
+    uploadCol.addEventListener('change', photoUpload);
     uploadCol.id = 'uploadColId';
     uploadCol.className = 'col-1 offset-9 align-items-start';
     uploadCol.setAttribute('type', 'file');
-    uploadCol.innerHTML = '^';
+
 
 
 
@@ -187,14 +187,13 @@ function getTileId(locat) {
     locat = parseInt(locat.replace('image', ''));
     console.log(locat);
     for (var i = 0; i < tileObjectArray.length; i++) {
-        // console.log({ locat, i, "tileObjectArray[i].location": tileObjectArray[i].location })
-        // console.log(tileObjectArray[i]);
+     
         if (tileObjectArray[i].location == locat) {
             return i;
 
         }
         else {
-            // console.log(i);
+        
 
         }
     }
@@ -219,7 +218,7 @@ function moveTile(getPuzzleSliderId) {
 
 
     for (let i = 0; i < 16; i++) {
-  
+
         let image = document.getElementById(`image${tileObjectArray[i].location}`);
 
         // .style = i;
@@ -255,17 +254,17 @@ function moveTile(getPuzzleSliderId) {
 
 function randomizer() {
 
-    
-    for(var i = 0; i<1000; i++){
+
+    for (var i = 0; i < 1000; i++) {
 
         var randomNum = Math.floor((Math.random() * 16));
 
         document.getElementById(`${randomNum}`).click();
 
 
-    
+
     }
-   
+
 
 
 
@@ -287,8 +286,31 @@ function randomizer() {
 
 function photoUpload() {
 
-    objectURL = URL.createObjectURL(imageSource);
+    
+    let imageId = document.getElementById('uploadColId');
+    let newImage = imageId.files[0];
+    
 
+    imageSource = `'images/${newImage}'`;
+
+    // console.log(imageSource);
+
+
+    // console.log(newImage);
+
+
+
+
+
+    // inputElement.addEventListener('change', function () {
+    //     var url = URL.createObjectURL(inputElement.files[0]);
+    //     imgElement.src = url;
+    // });
+
+
+
+
+createpuzzle();
 
 
 }
