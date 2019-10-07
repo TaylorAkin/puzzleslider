@@ -255,8 +255,23 @@ function moveTile(getPuzzleSliderId) {
 
 function randomizer() {
 
+    
+    for(var i = 0; i<1000; i++){
+
+        var randomNum = Math.floor((Math.random() * 16));
+
+        document.getElementById(`${randomNum}`).click();
+
+
+    
+    }
+   
+
+
+
+
     // keeping ranomizer to != win case
-    if (tileArray[0] == 0) {
+    if (tileArray[0].location == 0) {
 
         console.log('ta');
         randomizer();
@@ -272,7 +287,7 @@ function randomizer() {
 
 function photoUpload() {
 
-
+    objectURL = URL.createObjectURL(imageSource);
 
 
 
