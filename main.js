@@ -6,6 +6,10 @@ var tileArray = []
 
 var tileObjectArray = []
 
+var imageSource = 'images/Oregon.jpg'
+
+
+
 
 
 
@@ -19,6 +23,21 @@ class tileObject {
         // this.content = ht;
         // console.log(location);
 
+
+
+        this.render = function () {
+            var puzzletiles = document.createElement('div');
+            puzzletiles.addEventListener('click', this.render);
+            // render this specific tile object in html
+            var puzzlerow = document.getElementById('rowid');
+            puzzletiles.id = this.id;
+            puzzletiles.className = 'border display-1';
+            puzzletiles.setAttribute('style', 'height: 150px; width:150px; overflow: hidden; ');
+            puzzletiles.innerHTML = `<img id='image${this.id}' src='${imageSource}' height="600px" width="600px"></img>`;
+            puzzlerow.appendChild(puzzletiles);
+        }
+
+
     }
 }
 
@@ -30,11 +49,11 @@ function createpuzzle() {
 
     var puzzlecontainer = document.createElement("div");
     puzzlecontainer.id = 'containerid';
-    puzzlecontainer.className = 'container mt-5 h-100 w-50 border';
+    puzzlecontainer.className = 'container mt-5 border h-100 w-50';
 
 
     var puzzlerow = document.createElement("div");
-    puzzlerow.id = 'rowid';
+    puzzlerow.setAttribute('id', 'rowid');
     puzzlerow.className = 'row h-100';
 
 
@@ -45,26 +64,47 @@ function createpuzzle() {
         puzzletiles.addEventListener('click', checkTile);
         puzzletiles.id = i;
         tileArray.push(i);
-        puzzletiles.className = 'col-3 border display-1';
+        puzzletiles.className = 'border display-1';
+        puzzletiles.setAttribute('style', 'height: 150px; width:150px; overflow: hidden; background-color:black');
+
+
+        var image = document.createElement('img');
+        image.id = 'image' + i;
+        image.src = imageSource;
+        image.style = `height="600px"; width="600px";`
+
+        if (i == 0) {
+
+            image.setAttribute('style', 'opacity: 0');
+        }
+
+        else {
+            image.setAttribute('style', `margin-left:${i % 4 * -150}px; margin-top:${parseInt(i / 4) * -150}px`);
+        }
+        puzzletiles.appendChild(image);
         puzzlerow.appendChild(puzzletiles);
-        puzzletiles.innerHTML = '<img src="images/Oregon.jpg" width=150px height:150px>';
-        
+
 
 
         //variable to hold object instance then passed to array.
-        var tile = new tileObject(i, tileArray[i])
+        var tile = new tileObject(i, tileArray[i]);
+        //tile.render();
         tileObjectArray.push(tile);
 
         i++
         // console.log(puzzletiles.id);
 
+
+
     }
+
+
 
     // console.log(tileObjectArray);
 
     var buttonsContainer = document.createElement("div");
     buttonsContainer.id = 'buttonsContainerid';
-    puzzlecontainer.className = 'container h-100 w-5 0';
+    puzzlecontainer.className = 'container h-100 w-50';
 
     var buttonsRow = document.createElement("div");
     buttonsRow.id = 'buttonsRowId';
@@ -80,6 +120,7 @@ function createpuzzle() {
     uploadCol.addEventListener('click', photoUpload);
     uploadCol.id = 'uploadColId';
     uploadCol.className = 'col-1 offset-9 align-items-start';
+    uploadCol.setAttribute('type', 'file');
     uploadCol.innerHTML = '^';
 
 
@@ -96,12 +137,13 @@ function createpuzzle() {
     document.getElementById('puzzleslider').appendChild(puzzlecontainer);
     document.getElementById('puzzleslider').appendChild(buttonsContainer);
 
-
+    // imageSlicer();
 }
 
 
 function checkTile(e) {
     var getPuzzleSliderId = e.target.id;
+    // console.log(getPuzzleSliderId);
     var ClickID = getTileId(this.id)
     // var getNotClickId = tileObjectArray[this.id].location;
     // console.log(getTileId(this.id))
@@ -141,21 +183,29 @@ function checkTile(e) {
 
 
 function getTileId(locat) {
+    // console.log(locat);
+    locat = parseInt(locat.replace('image', ''));
+    console.log(locat);
     for (var i = 0; i < tileObjectArray.length; i++) {
-
+        // console.log({ locat, i, "tileObjectArray[i].location": tileObjectArray[i].location })
+        // console.log(tileObjectArray[i]);
         if (tileObjectArray[i].location == locat) {
             return i;
+
+        }
+        else {
             // console.log(i);
 
         }
     }
+    console.log("out of for loop - could not find match")
 }
 
 function moveTile(getPuzzleSliderId) {
 
-
+    // console.log(getPuzzleSliderId)
     var clickedId = getTileId(getPuzzleSliderId);
-    // console.log(clickedId);
+    console.log(clickedId);
     //location 0
     var new_location_ofClicked = tileObjectArray[0].location;
 
@@ -169,62 +219,41 @@ function moveTile(getPuzzleSliderId) {
 
 
     for (let i = 0; i < 16; i++) {
-        document.getElementById(`${tileObjectArray[i].location}`).innerHTML = i;
+  
+        let image = document.getElementById(`image${tileObjectArray[i].location}`);
+
+        // .style = i;
+        if (i == 0) {
+
+            image.setAttribute('style', 'opacity: 0');
+        }
+
+        else {
+            image.setAttribute('style', `margin-left:${i % 4 * -150}px; margin-top:${parseInt(i / 4) * -150}px`);
+        }
+
     }
 
+    //mywincondition
     var notWin = false;
-
     for (let j = 0; j < 16; j++) {
-
-
         if (tileObjectArray[j].location != tileObjectArray[j].id) {
 
             notWin = true
             console.log('true')
-
         }
-
-
     }
 
     if (notWin == false) {
         alert('WIN')
     }
-
 }
 
 
 
-
-//randomize puzzles location
-function getRandomInt(min, max, arr) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
 
 
 function randomizer() {
-
-    newArr = [];
-
-    for (var i = 0; i < tileArray.length; i++) {
-        var r = getRandomInt(0, 16, tileArray);
-
-        if (newArr.includes(r) == false) {
-
-            newArr.push(r);
-            document.getElementById(i).innerHTML = r;
-            // console.log('lalala');
-            tileObjectArray[i].id = r;
-
-        }
-        else {
-            i--;
-        }
-    }
-
-    tileArray = newArr;
 
     // keeping ranomizer to != win case
     if (tileArray[0] == 0) {
@@ -237,7 +266,14 @@ function randomizer() {
 
 }
 
+
+
+
+
 function photoUpload() {
+
+
+
 
 
 }
