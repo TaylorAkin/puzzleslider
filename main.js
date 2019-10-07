@@ -6,6 +6,10 @@ var tileArray = []
 
 var tileObjectArray = []
 
+var imageSource = 'images/Oregon.jpg'
+
+
+
 
 
 
@@ -30,7 +34,7 @@ function createpuzzle() {
 
     var puzzlecontainer = document.createElement("div");
     puzzlecontainer.id = 'containerid';
-    puzzlecontainer.className = 'container mt-5 h-100 w-50 border';
+    puzzlecontainer.className = 'container mt-5 border h-100 w-50';
 
 
     var puzzlerow = document.createElement("div");
@@ -47,9 +51,11 @@ function createpuzzle() {
         tileArray.push(i);
         puzzletiles.className = 'border display-1';
         puzzletiles.setAttribute('style', 'height: 150px; width:150px; overflow: hidden');
-        puzzletiles.innerHTML = '<img src="images/Oregon.jpg" width=600px; height:600px>';
+
+        puzzletiles.innerHTML = `<img id='image${i}' src='${imageSource}' height="600px" width="600px"></img>`;
         puzzlerow.appendChild(puzzletiles);
-    
+
+       
 
 
 
@@ -60,13 +66,17 @@ function createpuzzle() {
         i++
         // console.log(puzzletiles.id);
 
+
+
     }
+
+    
 
     // console.log(tileObjectArray);
 
     var buttonsContainer = document.createElement("div");
     buttonsContainer.id = 'buttonsContainerid';
-    puzzlecontainer.className = 'container h-100 w-5 0';
+    puzzlecontainer.className = 'container h-100 w-50';
 
     var buttonsRow = document.createElement("div");
     buttonsRow.id = 'buttonsRowId';
@@ -82,6 +92,7 @@ function createpuzzle() {
     uploadCol.addEventListener('click', photoUpload);
     uploadCol.id = 'uploadColId';
     uploadCol.className = 'col-1 offset-9 align-items-start';
+    uploadCol.setAttribute('type', 'file');
     uploadCol.innerHTML = '^';
 
 
@@ -98,7 +109,7 @@ function createpuzzle() {
     document.getElementById('puzzleslider').appendChild(puzzlecontainer);
     document.getElementById('puzzleslider').appendChild(buttonsContainer);
 
-
+    imageSlicer();
 }
 
 
@@ -174,7 +185,7 @@ function moveTile(getPuzzleSliderId) {
         document.getElementById(`${tileObjectArray[i].location}`).innerHTML = i;
     }
 
-//mywincondition
+    //mywincondition
     var notWin = false;
     for (let j = 0; j < 16; j++) {
         if (tileObjectArray[j].location != tileObjectArray[j].id) {
@@ -195,10 +206,6 @@ function moveTile(getPuzzleSliderId) {
 
 function randomizer() {
 
-
-
-
-
     // keeping ranomizer to != win case
     if (tileArray[0] == 0) {
 
@@ -213,19 +220,35 @@ function randomizer() {
 
 //every tile has the same image, just a certain same sized section of the image.
 function imageSlicer() {
-    var sliceImage = '';
-    for (var i = 0; i < tileObjectArray.length; i++) {
-      sliceImage =  tileObjectArray[i].innerhtml =  '<img src="images/Oregon.jpg" width=150px height:150px>'
-    }
 
+    
+
+    for (var i = 0; i < 16; i++) {
+
+        if( i == 0 ){
+
+            // document.getElementById(`image${0}`) = " ";
+        }
+
+        else {
+            document.getElementById(`image${i}`).setAttribute('style', `margin-left:${i % 4 * -150}px; margin-top:${parseInt(i / 4) * -150}px`);
+        }
+        
+
+
+
+    }
 
 
 
 
 }
 
+
+
+
 function photoUpload() {
-    
+
 
 
 
