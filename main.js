@@ -23,6 +23,21 @@ class tileObject {
         // this.content = ht;
         // console.log(location);
 
+
+
+        this.render = function () {
+            var puzzletiles = document.createElement('div');
+            puzzletiles.addEventListener('click', this.render);
+            // render this specific tile object in html
+            var puzzlerow = document.getElementById('rowid');
+            puzzletiles.id = this.id;
+            puzzletiles.className = 'border display-1';
+            puzzletiles.setAttribute('style', 'height: 150px; width:150px; overflow: hidden; ');
+            puzzletiles.innerHTML = `<img id='image${this.id}' src='${imageSource}' height="600px" width="600px"></img>`;
+            puzzlerow.appendChild(puzzletiles);
+        }
+
+
     }
 }
 
@@ -38,7 +53,7 @@ function createpuzzle() {
 
 
     var puzzlerow = document.createElement("div");
-    puzzlerow.id = 'rowid';
+    puzzlerow.setAttribute('id', 'rowid');
     puzzlerow.className = 'row h-100';
 
 
@@ -50,17 +65,30 @@ function createpuzzle() {
         puzzletiles.id = i;
         tileArray.push(i);
         puzzletiles.className = 'border display-1';
-        puzzletiles.setAttribute('style', 'height: 150px; width:150px; overflow: hidden');
+        puzzletiles.setAttribute('style', 'height: 150px; width:150px; overflow: hidden; background-color:black');
 
-        puzzletiles.innerHTML = `<img id='image${i}' src='${imageSource}' height="600px" width="600px"></img>`;
+
+        var image = document.createElement('img');
+        image.id = 'image' + i;
+        image.src = imageSource;
+        image.style = `height="600px"; width="600px";`
+
+        if (i == 0) {
+
+            image.setAttribute('style', 'opacity: 0');
+        }
+
+        else {
+            image.setAttribute('style', `margin-left:${i % 4 * -150}px; margin-top:${parseInt(i / 4) * -150}px`);
+        }
+        puzzletiles.appendChild(image);
         puzzlerow.appendChild(puzzletiles);
-
-       
 
 
 
         //variable to hold object instance then passed to array.
-        var tile = new tileObject(i, tileArray[i])
+        var tile = new tileObject(i, tileArray[i]);
+        //tile.render();
         tileObjectArray.push(tile);
 
         i++
@@ -70,7 +98,7 @@ function createpuzzle() {
 
     }
 
-    
+
 
     // console.log(tileObjectArray);
 
@@ -109,12 +137,13 @@ function createpuzzle() {
     document.getElementById('puzzleslider').appendChild(puzzlecontainer);
     document.getElementById('puzzleslider').appendChild(buttonsContainer);
 
-    imageSlicer();
+    // imageSlicer();
 }
 
 
 function checkTile(e) {
     var getPuzzleSliderId = e.target.id;
+    // console.log(getPuzzleSliderId);
     var ClickID = getTileId(this.id)
     // var getNotClickId = tileObjectArray[this.id].location;
     // console.log(getTileId(this.id))
@@ -154,21 +183,29 @@ function checkTile(e) {
 
 
 function getTileId(locat) {
+    // console.log(locat);
+    locat = parseInt(locat.replace('image', ''));
+    console.log(locat);
     for (var i = 0; i < tileObjectArray.length; i++) {
-
+        // console.log({ locat, i, "tileObjectArray[i].location": tileObjectArray[i].location })
+        // console.log(tileObjectArray[i]);
         if (tileObjectArray[i].location == locat) {
             return i;
+
+        }
+        else {
             // console.log(i);
 
         }
     }
+    console.log("out of for loop - could not find match")
 }
 
 function moveTile(getPuzzleSliderId) {
 
-
+    // console.log(getPuzzleSliderId)
     var clickedId = getTileId(getPuzzleSliderId);
-    // console.log(clickedId);
+    console.log(clickedId);
     //location 0
     var new_location_ofClicked = tileObjectArray[0].location;
 
@@ -182,7 +219,19 @@ function moveTile(getPuzzleSliderId) {
 
 
     for (let i = 0; i < 16; i++) {
-        document.getElementById(`${tileObjectArray[i].location}`).innerHTML = i;
+  
+        let image = document.getElementById(`image${tileObjectArray[i].location}`);
+
+        // .style = i;
+        if (i == 0) {
+
+            image.setAttribute('style', 'opacity: 0');
+        }
+
+        else {
+            image.setAttribute('style', `margin-left:${i % 4 * -150}px; margin-top:${parseInt(i / 4) * -150}px`);
+        }
+
     }
 
     //mywincondition
@@ -217,32 +266,6 @@ function randomizer() {
 
 }
 
-
-//every tile has the same image, just a certain same sized section of the image.
-function imageSlicer() {
-
-    
-
-    for (var i = 0; i < 16; i++) {
-
-        if( i == 0 ){
-
-            // document.getElementById(`image${0}`) = " ";
-        }
-
-        else {
-            document.getElementById(`image${i}`).setAttribute('style', `margin-left:${i % 4 * -150}px; margin-top:${parseInt(i / 4) * -150}px`);
-        }
-        
-
-
-
-    }
-
-
-
-
-}
 
 
 
