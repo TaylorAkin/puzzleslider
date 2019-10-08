@@ -42,19 +42,36 @@ class tileObject {
 }
 
 
-
-
-
 function createpuzzle() {
+
+
+    document.getElementById('puzzleslider').innerHTML = "";
 
     var puzzlecontainer = document.createElement("div");
     puzzlecontainer.id = 'containerid';
     puzzlecontainer.className = 'container mt-5 border h-100 w-50';
 
+    var containerrow = document.createElement("div");
+    containerrow.setAttribute('id', 'containerrowid');
+    containerrow.className = 'row h-100';
+    
+
+    var col1 = document.createElement("div");
+    col1.setAttribute('id', 'col1id');
+    col1.className = 'col-xs-3';
+
+    var col2 = document.createElement("div");
+    col2.setAttribute('id', 'col2id');
+    col2.className = 'col-xs-5';
+
 
     var puzzlerow = document.createElement("div");
     puzzlerow.setAttribute('id', 'rowid');
-    puzzlerow.className = 'row h-100';
+    puzzlerow.className = 'row h-100 w-100';
+
+
+
+
 
 
     var i = 0;
@@ -64,11 +81,12 @@ function createpuzzle() {
         puzzletiles.addEventListener('click', checkTile);
         puzzletiles.id = i;
         tileArray.push(i);
-        puzzletiles.className = 'border display-1';
+        puzzletiles.className = 'col-xs-3 border display-1';
         puzzletiles.setAttribute('style', 'height: 150px; width:150px; overflow: hidden; background-color:black');
 
 
         var image = document.createElement('img');
+        image.className = 'img-fluid.max-width:100%';
         image.id = 'image' + i;
         image.src = imageSource;
         image.style = `height="600px"; width="600px";`
@@ -98,9 +116,11 @@ function createpuzzle() {
 
     }
 
+    var col3 = document.createElement("div");
+    col3.setAttribute('id', 'col3id');
+    col3.className = 'col-xs-3 h-100';
 
 
-    // console.log(tileObjectArray);
 
     var buttonsContainer = document.createElement("div");
     buttonsContainer.id = 'buttonsContainerid';
@@ -122,15 +142,19 @@ function createpuzzle() {
     uploadCol.className = 'col-1 offset-9 align-items-start';
     uploadCol.setAttribute('type', 'file');
 
+   
 
 
-
-
-
-    puzzlecontainer.appendChild(puzzlerow);
+    
+    col2.appendChild(puzzlerow);
     buttonsRow.appendChild(randomizeCol);
     buttonsRow.appendChild(uploadCol);
     buttonsContainer.appendChild(buttonsRow);
+    containerrow.appendChild(col1);
+    containerrow.appendChild(col2)
+    containerrow.appendChild(col3);
+    puzzlecontainer.appendChild(containerrow);
+
 
 
 
@@ -261,13 +285,7 @@ function randomizer() {
 
         document.getElementById(`${randomNum}`).click();
 
-
-
     }
-
-
-
-
 
     // keeping ranomizer to != win case
     if (tileArray[0].location == 0) {
@@ -279,38 +297,23 @@ function randomizer() {
     // console.log(tileObjectArray);
 
 }
-
-
-
-
-
 function photoUpload() {
 
-    
+
     let imageId = document.getElementById('uploadColId');
     let newImage = imageId.files[0];
     
 
-    imageSource = `'images/${newImage}'`;
+    var url = URL.createObjectURL(imageId.files[0]);
+    
+    imageSource = url;
 
-    // console.log(imageSource);
-
-
-    // console.log(newImage);
-
-
-
-
+    createpuzzle();
 
     // inputElement.addEventListener('change', function () {
     //     var url = URL.createObjectURL(inputElement.files[0]);
     //     imgElement.src = url;
     // });
-
-
-
-
-createpuzzle();
 
 
 }
